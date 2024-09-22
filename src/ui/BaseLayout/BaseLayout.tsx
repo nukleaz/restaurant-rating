@@ -1,3 +1,4 @@
+import { RestaurantsPage } from '../../Pages/RestaurantsPage';
 import { Avatar } from '../Avatar/Avatar';
 import { Logo } from '../Logo/Logo';
 import { SearchInput } from '../SearchInput/SearchInput';
@@ -11,8 +12,9 @@ export const BaseLayout = () => {
 				<Avatar />
 			</header>
 			<main>
-				<section>
+				<section className='restaurants'>
 					<SearchInput />
+					<RestaurantsPage />
 				</section>
 			</main>
 			<footer>
