@@ -1,23 +1,53 @@
+import { useEffect, useState } from 'react';
 import { useRestList } from '../hooks/useRestList';
+import { Loader } from '../ui/Loader/Loader';
+import { SearchInput } from '../ui/SearchInput/SearchInput';
 import { RestList } from './RestList';
 import './styles.css';
 
 export const RestaurantsPage = () => {
-	const { data, isLoading } = useRestList();
+	const { data, isFetching, error } = useRestList();
+	const [searchString, setSearchString] = useState<string>('');
+	const [debouncedValue, setDebouncedValue] = useState<string>('');
 
 	const handleChooseRating = (id: string) => {
 		const chosenRest = data?.find(item => item.id === id);
 		console.log(chosenRest);
 	};
 
-	if (isLoading) {
-		return (
-			<div>
-				<p>Пожалуйста, подождите</p>
-				<p>Номера доступные для бронирования скоро появятся здесь</p>
-			</div>
-		);
+	useEffect(() => {
+		const timeoutId = setTimeout(() => {
+			setDebouncedValue(searchString);
+		}, 400);
+
+		return () => {
+			clearTimeout(timeoutId);
+		};
+	}, [searchString]);
+
+	const handleValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setSearchString(e.target.value);
+	};
+
+	const filteredData = data?.filter(item =>
+		item.name.toLowerCase().includes(debouncedValue.toLowerCase())
+	);
+
+	if (isFetching) {
+		return <Loader />;
 	}
 
-	return <RestList list={data || []} onChooseRaiting={handleChooseRating} />;
+	if (error) {
+		return <p>Ошибка: {error.message}</p>;
+	}
+
+	return (
+		<>
+			<SearchInput value={searchString} onChange={handleValue} />
+			<RestList
+				list={filteredData || []}
+				onChooseRaiting={handleChooseRating}
+			/>
+		</>
+	);
 };
