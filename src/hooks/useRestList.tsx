@@ -3,15 +3,15 @@ import { Restaurant, getRestaurants } from '../api/api';
 
 interface Response {
 	data: Restaurant[] | undefined;
-	isError: boolean;
-	isLoading: boolean;
+	isFetching: boolean;
+	error: Error | null;
 }
 
 export const useRestList = (): Response => {
-	const { data, isError, isLoading } = useQuery({
+	const { data, isFetching, error } = useQuery({
 		queryKey: ['restaurants'],
 		queryFn: getRestaurants,
 	});
 
-	return { data, isError, isLoading };
+	return { data, isFetching, error };
 };
