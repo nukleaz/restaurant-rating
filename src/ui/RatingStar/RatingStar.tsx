@@ -1,39 +1,36 @@
 import { FC } from 'react';
 import { FaStar } from 'react-icons/fa';
+import './styles.css';
 
-interface RatingStarProps {
-	rating: number;
-	hoverRating: number | null;
+interface StarRatingProps {
+	currentRating: number;
+	ratingValue: number;
+	hover: number | null;
 	onChange: (rating: number) => void;
-	// onClick: (rating: number) => void;
 	onMouseEnter: (rating: number) => void;
 	onMouseLeave: () => void;
 }
 
-export const RatingStar: FC<RatingStarProps> = ({
-	rating,
-	hoverRating,
+export const RatingStar: FC<StarRatingProps> = ({
+	currentRating,
+	ratingValue,
+	hover,
 	onChange,
-	// onClick,
 	onMouseEnter,
 	onMouseLeave,
-}) => {
-	return (
-		<label>
-			<input
-				type='radio'
-				name='rating'
-				onChange={() => onChange(rating)}
-				// onClick={() => onClick(rating)}
-				data-rating={rating}
-			/>
-			<FaStar
-				className='star'
-				size={20}
-				color={rating <= (hoverRating || rating) ? '#ffc107' : '#e4e5e9'}
-				onMouseEnter={() => onMouseEnter(rating)}
-				onMouseLeave={onMouseLeave}
-			/>
-		</label>
-	);
-};
+}) => (
+	<label data-rating={currentRating}>
+		<input
+			type='radio'
+			name='rating'
+			onChange={() => onChange(currentRating)}
+		/>
+		<FaStar
+			className='star'
+			size={20}
+			color={currentRating <= (hover || ratingValue) ? '#ffc107' : '#e4e5e9'}
+			onMouseEnter={() => onMouseEnter(currentRating)}
+			onMouseLeave={onMouseLeave}
+		/>
+	</label>
+);
