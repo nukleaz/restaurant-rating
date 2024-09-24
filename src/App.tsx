@@ -3,12 +3,10 @@ import { BaseLayout } from './ui/BaseLayout/BaseLayout';
 
 const queryClient = new QueryClient();
 
-function App() {
+export const App = () => {
 	return (
 		<QueryClientProvider client={queryClient}>
 			<BaseLayout />
 		</QueryClientProvider>
 	);
-}
-
-export default App;
+};

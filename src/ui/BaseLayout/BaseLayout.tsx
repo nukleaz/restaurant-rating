@@ -1,4 +1,4 @@
-import { RestaurantsPage } from '../../Pages/RestaurantsPage';
+import { RestaurantsContainer } from '../../Containers/RestaurantsContainer';
 import { Avatar } from '../Avatar/Avatar';
 import { Logo } from '../Logo/Logo';
 import './styles.css';
@@ -12,7 +12,7 @@ export const BaseLayout = () => {
 			</header>
 			<main>
 				<section className='restaurants'>
-					<RestaurantsPage />
+					<RestaurantsContainer />
 				</section>
 			</main>
 			<footer>
