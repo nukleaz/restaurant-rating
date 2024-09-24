@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
-import { FaStar } from 'react-icons/fa';
 import { Restaurant } from '../../api/api';
+import { RatingStar } from '../RatingStar/RatingStar';
 import './styles.css';
 
 export interface RestCardProps extends Restaurant {
@@ -18,10 +18,11 @@ export const RestCard: FC<RestCardProps> = ({
 	const [ratingValue, setRatingValue] = useState<number>(rating);
 	const [hover, setHover] = useState<number | null>(null);
 
-	const handleRatingChange = (e: any) => {
-		const currentRating: number = e.target.parentNode.dataset.rating;
+	const handleRatingChange = (currentRating: number) => {
+		setRatingValue(currentRating);
 		onChooseRating(id, currentRating);
 	};
+
 	return (
 		<li className='restaurants__card restaurant'>
 			<img className='restaurant__img' src={url} alt='Фото ресторана' />
@@ -30,23 +31,15 @@ export const RestCard: FC<RestCardProps> = ({
 			{[...Array(5)].map((_, index) => {
 				const currentRating: number = index + 1;
 				return (
-					<label key={index} data-rating={currentRating}>
-						<input
-							type='radio'
-							name='rating'
-							onChange={handleRatingChange}
-							onClick={() => setRatingValue(currentRating)}
-						/>
-						<FaStar
-							className='star'
-							size={20}
-							color={
-								currentRating <= (hover || ratingValue) ? '#ffc107' : '#e4e5e9'
-							}
-							onMouseEnter={() => setHover(currentRating)}
-							onMouseLeave={() => setHover(null)}
-						/>
-					</label>
+					<RatingStar
+						key={index}
+						currentRating={currentRating}
+						ratingValue={ratingValue}
+						hover={hover}
+						onChange={handleRatingChange}
+						onMouseEnter={setHover}
+						onMouseLeave={() => setHover(null)}
+					/>
 				);
 			})}
 		</li>
