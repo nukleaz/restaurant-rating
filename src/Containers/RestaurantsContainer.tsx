@@ -1,24 +1,24 @@
 import { useEffect, useState } from 'react';
+import { useRatingChange } from '../hooks/useRatingChange';
 import { useRestList } from '../hooks/useRestList';
 import { Loader } from '../ui/Loader/Loader';
+import { RestList } from '../ui/RestList/RestList';
 import { SearchInput } from '../ui/SearchInput/SearchInput';
-import { RestList } from './RestList';
-import './styles.css';
 
-export const RestaurantsPage = () => {
+export const RestaurantsContainer = () => {
 	const { data, isFetching, error } = useRestList();
+	const { register } = useRatingChange();
 	const [searchString, setSearchString] = useState<string>('');
 	const [debouncedValue, setDebouncedValue] = useState<string>('');
 
-	const handleChooseRating = (id: string) => {
-		const chosenRest = data?.find(item => item.id === id);
-		console.log(chosenRest);
+	const handleChooseRating = (id: string, rating: number) => {
+		register(id, rating);
 	};
 
 	useEffect(() => {
 		const timeoutId = setTimeout(() => {
 			setDebouncedValue(searchString);
-		}, 400);
+		}, 300);
 
 		return () => {
 			clearTimeout(timeoutId);
@@ -46,7 +46,9 @@ export const RestaurantsPage = () => {
 			<SearchInput value={searchString} onChange={handleValue} />
 			<RestList
 				list={filteredData || []}
-				onChooseRaiting={handleChooseRating}
+				onChooseRating={(id: string, rating: number) =>
+					handleChooseRating(id, rating)
+				}
 			/>
 		</>
 	);
